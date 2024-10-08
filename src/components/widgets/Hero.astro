@@ -11,7 +11,7 @@ const {
 
   content = await Astro.slots.render('content'),
   actions = await Astro.slots.render('actions'),
-  image = await Astro.slots.render('image'),
+  media = await Astro.slots.render('media'),
 
   id,
   bg = await Astro.slots.render('bg'),
@@ -26,8 +26,8 @@ const {
   </div>
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
     <div class="pt-0 md:pt-[76px] pointer-events-none"></div>
-    <div class="py-12 md:py-20">
-      <div class="text-center pb-10 md:pb-16 max-w-5xl mx-auto">
+    <div class="py-2 md:py-8">
+      <div class="text-center pb-10 md:pb-8 max-w-5xl mx-auto relative z-10">
         {
           tagline && (
             <p
@@ -39,7 +39,7 @@ const {
         {
           title && (
             <h1
-              class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading dark:text-gray-200"
+              class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading dark:text-gray-200 animate__animated animate__fadeIn"
               set:html={title}
             />
           )
@@ -64,12 +64,17 @@ const {
         </div>
         {content && <Fragment set:html={content} />}
       </div>
-      <div>
+
+      {/* Contenedor para el video con fondo semitransparente */}
+      <div class="relative m-auto max-w-5xl">
         {
-          image && (
-            <div class="relative m-auto max-w-5xl">
-              {typeof image === 'string' ? (
-                <Fragment set:html={image} />
+          media && (
+            <>
+              {typeof media === 'string' ? (
+                <video class="mx-auto rounded-md w-full aspect-video" controls autoplay loop muted>
+                  <source src={media} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               ) : (
                 <Image
                   class="mx-auto rounded-md w-full"
@@ -78,10 +83,10 @@ const {
                   loading="eager"
                   width={1024}
                   height={576}
-                  {...image}
+                  {...media}
                 />
               )}
-            </div>
+            </>
           )
         }
       </div>
