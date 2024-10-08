@@ -1,33 +1,19 @@
----
-import { UI } from 'astrowind:config';
-
-// TODO: This code is temporary
----
-
-<script is:inline define:vars={{ defaultTheme: UI.theme || 'system' }}>
-  function applyTheme(theme) {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+<script is:inline>
+  // Siempre aplica el tema claro
+  function applyTheme() {
+    document.documentElement.classList.remove('dark');
     const matches = document.querySelectorAll('[data-aw-toggle-color-scheme] > input');
 
     if (matches && matches.length) {
       matches.forEach((elem) => {
-        elem.checked = theme !== 'dark';
+        elem.checked = true;
       });
     }
   }
 
-  if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
-    applyTheme(defaultTheme.replace(':only', ''));
-  } else if (
-    localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
-    applyTheme('light');
-  } else {
-    applyTheme('light');
-  }
+  // Llama a applyTheme para asegurarse de que el modo claro esté siempre activo
+  applyTheme();
+
+  // Opcional: eliminar cualquier configuración previa del tema en localStorage
+  localStorage.removeItem('theme');
 </script>
